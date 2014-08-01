@@ -1,0 +1,8 @@
+# pip leftover
+pyconfd.egg-info/
+
+# editor leftovers
+.*.sw*
+
+# precompiled python
+*.pyc
