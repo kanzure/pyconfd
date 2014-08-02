@@ -86,6 +86,33 @@ echo "The number is: {{ number }}"
 
 The plugin's "get" method can be written to do whatever. I often use it with [consul](https://consul.io/) like with [consulate](https://pypi.python.org/pypi/consulate) or [pyconsul](https://pypi.python.org/pypi/pyconsul). Others may prefer to query [etcd](https://github.com/coreos/etcd).
 
+## consulate
+
+Extract a list of servers running a certain service, and their IP addresses.
+
+``` python
+import pyconfd
+import consulate
+
+class HAProxy(pyconfd.plugin):
+    def get(self):
+        """
+        Get relevant variables from consul.
+
+        :rtype: dict
+        """
+        data = {"servers": {}}
+        session = consulate.Consulate()
+        services = session.catalog.services().keys()
+        for service in services:
+            data["servers"][service] = []
+            servers = session.catalog.service(service)
+            for server in servers:
+                ip_address = server["Address"]
+                data["servers"][service].append(ip_address)
+        return data
+```
+
 # future work
 
 * daemon mode
