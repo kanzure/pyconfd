@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import pyconfd
-
 try:
     from setuptools import setup
 except ImportError:
@@ -15,7 +13,7 @@ packages = [
 
 setup(
     name="pyconfd",
-    version=pyconfd.__version__,
+    version="0.0.4",
     description="Auto update config files from consul or etcd.",
     author="Bryan Bishop",
     author_email="kanzure@gmail.com",
