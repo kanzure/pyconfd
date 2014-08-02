@@ -94,7 +94,7 @@ Extract a list of servers running a certain service, and their IP addresses.
 import pyconfd
 import consulate
 
-class HAProxy(pyconfd.plugin):
+class HAProxy(pyconfd.Plugin):
     def get(self):
         """
         Get relevant variables from consul.
