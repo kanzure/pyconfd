@@ -7,7 +7,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-requires = []
+requires = ["gevent", "Jinja2"]
 
 packages = [
     "pyconfd",
