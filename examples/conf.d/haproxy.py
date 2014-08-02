@@ -23,11 +23,11 @@ class HAProxyPlugin(pyconfd.Plugin):
     dest = "/etc/haproxy/haproxy.cfg"
 
     # check generated config file (not mandatory)
-    #check_cmd = "/usr/sbin/haproxy -c -q -f {{ src }}"
+    #check_cmd = "/usr/sbin/haproxy -c -q -f {{ dest }}"
 
     # Safely reload the process. Also, if you are using supervisord you can run
     # "supervisordctl reload haproxy", but it would drop active connections.
-    reload_cmd = "/usr/sbin/haproxy -f {{ src }} -p /var/run/haproxy.pid -sf $(</var/run/haproxy.pid)"
+    reload_cmd = "/usr/sbin/haproxy -f {{ dest }} -p /var/run/haproxy.pid -sf $(</var/run/haproxy.pid)"
 
     def get(self):
         """
