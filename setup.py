@@ -19,10 +19,15 @@ setup(
     description="Auto update config files from consul or etcd.",
     author="Bryan Bishop",
     author_email="kanzure@gmail.com",
+    license="BSD",
     url="https://github.com/kanzure/pyconfd",
     install_requires=requires,
     packages=packages,
-    license="BSD",
+    entry_points={
+        "console_scripts": [
+            "pyconfd = pyconfd.core.main",
+        ],
+    },
     classifiers=(
         "Intended Audience :: Developers",
         "Natural Language :: English",
