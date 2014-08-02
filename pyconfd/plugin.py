@@ -43,6 +43,30 @@ class Plugin(object):
         # keeps track of the last set of config values
         self._last_config = None
 
+        # check_cmd and reload_cmd can be templates
+        self.check_cmd = self._template_process(self.check_cmd)
+        self.reload_cmd = self._template_process(self.reload_cmd)
+
+    def _template_process(self, template):
+        """
+        Populate the template based on the values attached to the current
+        instance. This can be used to populate string templates like reload_cmd
+        and check_cmd, which might reference other instance variables
+        (specifically src and dest).
+
+        In the future, if more variables are required, a more generic solution
+        is to populate the template with self.__dict__ or something.
+        """
+        if template:
+            jtemplate = jinja2.Template(template)
+            populated = jtemplate.render(**{
+                "src": self.src,
+                "dest": self.dest,
+            })
+            return populated
+        else:
+            return template
+
     def sleep(self):
         """
         Sleep before checking again. The better way to do this would be to
