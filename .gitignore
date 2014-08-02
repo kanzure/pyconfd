@@ -1,6 +1,10 @@
 # pip leftover
 pyconfd.egg-info/
 
+# python leftovers
+build/
+dist/
+
 # editor leftovers
 .*.sw*
 
