@@ -25,7 +25,7 @@ setup(
     packages=packages,
     entry_points={
         "console_scripts": [
-            "pyconfd = pyconfd.core.main",
+            "pyconfd = pyconfd.core:main",
         ],
     },
     classifiers=(
