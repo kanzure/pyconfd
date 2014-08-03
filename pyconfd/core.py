@@ -29,7 +29,10 @@ def import_plugins(path="/etc/pyconfd/conf.d/"):
 
     # Remove ".py" from the name, use filename as module name Assume that all
     # filenames are in the form of "xyz.py".
-    module_names = [filename.replace(".py", "") for filename in filenames]
+    module_names = [filename.split(".")[0] for filename in filenames]
+
+    # filter out dupes
+    module_names = list(set(module_names))
 
     # import each plugin
     for module_name in module_names:
