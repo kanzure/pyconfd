@@ -116,6 +116,9 @@ class Plugin(object):
         executing = True
         while executing:
             try:
+                # in case self.get() fails
+                data = None
+
                 # determines if config is new
                 skip = False
 
