@@ -13,7 +13,7 @@ packages = [
 
 setup(
     name="pyconfd",
-    version="0.0.5",
+    version="0.0.6",
     description="Auto update config files from consul or etcd.",
     author="Bryan Bishop",
     author_email="kanzure@gmail.com",
