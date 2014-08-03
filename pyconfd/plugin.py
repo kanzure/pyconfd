@@ -43,6 +43,9 @@ class Plugin(object):
         # keeps track of the last set of config values
         self._last_config = None
 
+        # keeps track of the last template content
+        self._last_template = None
+
         # check_cmd and reload_cmd can be templates
         self.check_cmd = self._template_process(self.check_cmd)
         self.reload_cmd = self._template_process(self.reload_cmd)
@@ -89,17 +92,28 @@ class Plugin(object):
         """
         raise NotImplementedError("Subclass must implement its own get method.")
 
-    def generate(self, template_input, template_path="/etc/pyconfd/templates/"):
+    def _get_template_path(self, template_path="/etc/pyconfd/templates/"):
+        """
+        Calculate the absolute path to the template.
+        """
+        return os.path.abspath(os.path.join(template_path, self.src))
+
+    def _get_template_content(self):
+        """
+        Load the template content.
+        """
+        srcpath = self._get_template_path()
+        with open(srcpath, "r") as template_fh:
+            template_content = template_fh.read()
+        return template_content
+
+    def generate(self, template_input):
         """
         Populate the template from the given input.
         """
         log.debug("Reading the template.")
 
-        srcpath = os.path.join(template_path, self.src)
-
-        # load template content
-        with open(srcpath, "r") as template_fh:
-            template_content = template_fh.read()
+        template_content = self._get_template_content()
 
         # populate the template
         log.debug("Populating the template.")
@@ -138,6 +152,17 @@ class Plugin(object):
                     if self._last_config == data:
                         skip = True
 
+                # don't skip if the template has changed, even if data is old
+                if skip:
+                    # never skip if the template last time was None (initial loop)
+                    if self._last_template is None:
+                        skip = False
+                    else:
+                        # don't skip if the template content is new
+                        content = self._get_template_content()
+                        if content != self._last_template:
+                            skip = False
+
                 if not skip:
                     try:
                         # populate the template
@@ -148,6 +173,7 @@ class Plugin(object):
                     else:
                         self.write_config(populated)
                         self.reload_process()
+                        self._last_template = self._get_template_content()
                 else:
                     log.debug("No new data. Skipping.")
             finally:
