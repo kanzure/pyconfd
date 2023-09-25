@@ -1,2 +1,2 @@
 Jinja2==2.11.3
-gevent==1.0.1
+gevent==23.9.1
